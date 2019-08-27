@@ -356,14 +356,14 @@ class BatchRegistrationResponse(Resource):
             # Convert empty strings to Nones when doing validation,
             # but back before storing in database.
             @pre_load
-            def empty_to_none(self, in_data):
+            def empty_to_none(self, in_data, **kwargs):
                 for k, v in in_data.items():
                     if v == "":
                         in_data[k] = None
                 return in_data
 
             @post_load
-            def none_to_empty(self, in_data):
+            def none_to_empty(self, in_data, **kwargs):
                 for k, v in in_data.items():
                     if v is None:
                         in_data[k] = ''
@@ -391,7 +391,7 @@ class BatchRegistrationResponse(Resource):
                 allow_none=True
             )
             @validates_schema
-            def validate_parent_email(self, data):
+            def validate_parent_email(self, data, **kwargs):
                 if (data['age'] == '13-17' and
                         data['parent_email'] is None):
                     raise ValidationError(
